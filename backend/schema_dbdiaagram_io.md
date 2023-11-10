@@ -26,7 +26,6 @@ Table Spots {
   createdAt timestamp
   updatedAt timestamp
   avgRating decimal
-  previewImage varchar
 }
 
 Table Images {
@@ -57,7 +56,7 @@ Table Bookings {
   updatedAt timestamp
 }
 
-![Alt text](image.png)
+
 
 
 
