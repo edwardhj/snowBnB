@@ -25,7 +25,6 @@ Table Spots {
   price integer
   createdAt timestamp
   updatedAt timestamp
-  avgRating decimal
 }
 
 Table Images {
