@@ -12,29 +12,34 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await User.bulkCreate([
-      {
-        email: 'demo@user.io',
-        firstName: 'demo',
-        lastName: 'one',
-        username: 'Demo-lition',
-        hashedPassword: bcrypt.hashSync('password')
-      },
-      {
-        email: 'user1@user.io',
-        firstName: 'demo',
-        lastName: 'two',
-        username: 'FakeUser1',
-        hashedPassword: bcrypt.hashSync('password2')
-      },
-      {
-        email: 'user2@user.io',
-        firstName: 'demo',
-        lastName: 'three',
-        username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
-      }
-    ], { validate: true });
+    try {
+      await User.bulkCreate([
+        {
+          email: 'demo@user.io',
+          firstName: 'Demo',
+          lastName: 'One',
+          username: 'Demo-lition',
+          hashedPassword: bcrypt.hashSync('password')
+        },
+        {
+          email: 'user1@user.io',
+          firstName: 'Demo',
+          lastName: 'Two',
+          username: 'FakeUser1',
+          hashedPassword: bcrypt.hashSync('password2')
+        },
+        {
+          email: 'user2@user.io',
+          firstName: 'Demo',
+          lastName: 'Three',
+          username: 'FakeUser2',
+          hashedPassword: bcrypt.hashSync('password3')
+        }
+      ], { validate: true });
+    } catch (error) {
+      console.log(error)
+    }
+
   },
 
   async down (queryInterface, Sequelize) {

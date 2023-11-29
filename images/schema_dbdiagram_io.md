@@ -2,55 +2,65 @@
 // Docs: https://dbml.dbdiagram.io/docs
 
 Table Users {
-  id integer [pk, increment]
-  firstName varchar
-  lastName varchar
-  email varchar [unique]
-  username varchar [unique]
-  password varchar
-
+  id int [pk, increment]
+  firstName varchar [not null]
+  lastName varchar [not null]
+  username varchar [not null, unique]
+  hashedPassword varchar [not null]
+  email varchar [not null, unique]
+  createdAt timestamp
+  updatedAt timestamp
 }
 
 Table Spots {
-  id integer [pk, increment]
-  ownerId integer [ref: > Users.id]
+  id int [pk, increment]
+  ownerId int [ref: > Users.id]
   address varchar
   city varchar
   state varchar
   country varchar
   lat decimal
   lng decimal
-  name varchar
-  description text
-  price integer
+  name varchar [not null]
+  description varchar [not null]
+  price decimal
   createdAt timestamp
   updatedAt timestamp
 }
 
-Table Images {
-  id integer [pk, increment]
-  imageableId integer [ref: > Users.id, ref: > Reviews.id]
-  imageableType varchar
-  url varchar
-  preview boolean
-}
-
 Table Reviews {
-  id integer [pk, increment]
-  userId integer [ref: > Users.id]
-  spotId integer [ref: > Spots.id]
-  review text
-  stars decimal
+  id int [pk, increment]
+  spotId int [ref: > Spots.id]
+  userId int [ref: > Users.id]
+  review varchar [not null]
+  stars int [not null]
   createdAt timestamp
   updatedAt timestamp
 }
 
 Table Bookings {
-  id integer [pk, increment]
-  userId integer [ref: > Users.id]
-  spotId integer [ref: > Spots.id]
-  startDate date
-  endDate date
+  id int [pk, increment]
+  spotId int [ref: > Spots.id]
+  userId int [ref: > Users.id]
+  startDate date [not null]
+  endDate date [not null]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table SpotImages {
+  id int [pk, increment]
+  spotId int [ref: > Spots.id]
+  url varchar
+  preview boolean [not null, default: false]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table ReviewImages {
+  id int [pk, increment]
+  reviewId int [ref: > Reviews.id]
+  url varchar
   createdAt timestamp
   updatedAt timestamp
 }

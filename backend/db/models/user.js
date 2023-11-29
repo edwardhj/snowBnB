@@ -6,6 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here
+      User.hasMany(models.Booking, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      }),
+      User.hasMany(models.Spot, {
+        foreignKey: 'ownerId',
+        onDelete: 'CASCADE'
+      }),
+      User.hasMany(models.Review, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      })
     }
   };
 
@@ -13,11 +25,27 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isAlpha: true,
+          CapitalLetter(value){
+            if (value[0].toUpperCase() !== value[0]){
+              throw new Error('Name must begin with a capital letter')
+            }
+          }
+        }
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isAlpha: true,
+          CapitalLetter(value){
+            if (value[0].toUpperCase() !== value[0]){
+              throw new Error('Name must begin with a capital letter')
+            }
+          }
+        }
       },
       username: {
         type: DataTypes.STRING,
