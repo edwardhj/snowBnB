@@ -21,29 +21,34 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await User.bulkCreate([
-    {
-      email: 'edwardjung2018@gmail.com',
-      firstName: 'Edward',
-      lastName: 'Jung',
-      username: 'ejungie',
-      hashedPassword: bcrypt.hashSync('happy123')
-    },
-    {
-      email: 'lizziepark@gmail.com',
-      firstName: 'Elizabeth',
-      lastName: 'Heather',
-      username: 'lizzo',
-      hashedPassword: bcrypt.hashSync('sad123')
-    },
-    {
-      email: 'krakra@gmail.com',
-      firstName: 'Kevin',
-      lastName: 'Rockefeller',
-      username: 'krakra',
-      hashedPassword: bcrypt.hashSync('lit123')
-    }
-   ], { validate: true })
+   try {
+    await User.bulkCreate([
+      {
+        email: 'edwardjung2018@gmail.com',
+        firstName: 'Edward',
+        lastName: 'Jung',
+        username: 'ejungie',
+        hashedPassword: bcrypt.hashSync('happy123')
+      },
+      {
+        email: 'lizziepark@gmail.com',
+        firstName: 'Elizabeth',
+        lastName: 'Heather',
+        username: 'lizzo',
+        hashedPassword: bcrypt.hashSync('sad123')
+      },
+      {
+        email: 'krakra@gmail.com',
+        firstName: 'Kevin',
+        lastName: 'Rockefeller',
+        username: 'krakra',
+        hashedPassword: bcrypt.hashSync('lit123')
+      }
+     ], { validate: true })
+   } catch (error) {
+    console.log(error)
+   }
+
   },
 
   async down (queryInterface, Sequelize) {

@@ -20,18 +20,22 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await SpotImage.bulkCreate([
-    {
-      spotId: 1,
-      url: 'www.bigbear.com',
-      preview: true
-    },
-    {
-      spotId: 2,
-      url: 'www.mammothmountains.com',
-      preview: true
-    }
-   ], { validate: true })
+   try {
+    await SpotImage.bulkCreate([
+      {
+        spotId: 1,
+        url: 'www.bigbear.com',
+        preview: true
+      },
+      {
+        spotId: 2,
+        url: 'www.mammothmountains.com',
+        preview: true
+      }
+     ], { validate: true })
+   } catch (error) {
+    console.log(error)
+   }
   },
 
   async down (queryInterface, Sequelize) {
