@@ -39,23 +39,42 @@ module.exports = (sequelize, DataTypes) => {
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
     },
     lat: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNumeric: true,
+        min: -90,
+        max: 90
+      }
     },
     lng: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNumeric: true,
+        min: -180,
+        max: 180
+      }
     },
     name: {
       type: DataTypes.STRING,
@@ -66,7 +85,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        min: 0.01,
+        isNumeric: true
+      }
     },
   }, {
     sequelize,
