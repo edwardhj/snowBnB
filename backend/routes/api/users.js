@@ -10,16 +10,18 @@ const validateSignup = [
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()
-      .withMessage('Please provide a valid email.')
+      .withMessage('Please provide a valid email.'),
+    check('email')
       .custom(async (value, { req }) => {
         // Check if the email is unique
         const existingUser = await User.findOne({
           where: { email: value }
         });
         if (existingUser) {
-          throw new Error('Email is already in use.');
+          const err = new Error('User already exists');
+          err.errors = { email: 'User with that email already exists' }
+          throw err;
         }
-        return true;
       }),
     check('username')
       .exists({ checkFalsy: true })
