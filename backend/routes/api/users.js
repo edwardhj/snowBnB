@@ -10,19 +10,7 @@ const validateSignup = [
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()
-      .withMessage('Please provide a valid email.'),
-    check('email')
-      .custom(async (value, { req }) => {
-        // Check if the email is unique
-        const existingUser = await User.findOne({
-          where: { email: value }
-        });
-        if (existingUser) {
-          const err = new Error('User already exists');
-          err.errors = { email: 'User with that email already exists' }
-          throw err;
-        }
-      }),
+      .withMessage('Invalid email'),
     check('username')
       .exists({ checkFalsy: true })
       .isLength({ min: 4 })
@@ -31,10 +19,19 @@ const validateSignup = [
       .not()
       .isEmail()
       .withMessage('Username cannot be an email.'),
+    check('username')
+      .exists({ checkFalsy: true })
+      .withMessage('Username is required'),
     check('password')
       .exists({ checkFalsy: true })
       .isLength({ min: 6 })
       .withMessage('Password must be 6 characters or more.'),
+    check('firstName')
+      .exists({ checkFalsy: true })
+      .withMessage('First Name is required'),
+    check('lastName')
+      .exists({ checkFalsy: true })
+      .withMessage('Last Name is required'),  
     handleValidationErrors
   ];
 
@@ -42,6 +39,28 @@ const validateSignup = [
 router.post('/', validateSignup, async (req, res) => {
       const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
+
+      // Check if User already exists with specified email
+      const existingEmail = await User.findOne({ where: { email: email } });
+      // if User exists, throw error for user existing with email
+      if (existingEmail){
+        const err = new Error('User already exists');
+        err.status = 500;
+        err.msg = 'User already exists';
+        err.errors = { email: 'User with that email already exists' };
+        throw err;
+      }
+      // Check if User already exists with specified username
+      const existingUserName = await User.findOne({ where: { username: username } });
+      if (existingUserName){
+        const err = new Error('User already exists');
+        err.status = 500;
+        err.msg = 'User already exists';
+        err.errors = { email: 'User with that username already exists' };
+        throw err;
+      }
+
+      // Create a new User
       const user = await User.create({ firstName, lastName, email, username, hashedPassword });
   
       const safeUser = {
