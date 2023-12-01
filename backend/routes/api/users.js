@@ -10,7 +10,17 @@ const validateSignup = [
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()
-      .withMessage('Please provide a valid email.'),
+      .withMessage('Please provide a valid email.')
+      .custom(async (value, { req }) => {
+        // Check if the email is unique
+        const existingUser = await User.findOne({
+          where: { email: value }
+        });
+        if (existingUser) {
+          throw new Error('Email is already in use.');
+        }
+        return true;
+      }),
     check('username')
       .exists({ checkFalsy: true })
       .isLength({ min: 4 })
