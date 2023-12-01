@@ -12,6 +12,21 @@ router.get('/', async (req, res) => {
     const spotsList = [];
     spots.forEach( spot => spotsList.push(spot.toJSON()) );
 
+    // Remove Reviews & create avgRating key
+    spotsList.forEach(spot => {
+        let sum = 0;
+        let spots = 0;
+        spot.Reviews.forEach(review => {
+            if (review.stars){
+                sum += review.stars;
+                spots ++;
+                spot.avgRating = (sum / spots);
+            }
+        })
+        if (!spot.avgRating) spot.avgRating = 'no ratings available'
+        delete spot.Reviews
+    })
+
     // Remove SpotImages & create previewImage key
     spotsList.forEach(spot => {
         spot.SpotImages.forEach(image => {
@@ -19,13 +34,6 @@ router.get('/', async (req, res) => {
         })
         if (!spot.previewImage) spot.previewImage = 'no preview image available';
         delete spot.SpotImages;
-    })
-
-    // Remove Reviews & create avgRating key
-    spotsList.forEach(spot => {
-        spot.Reviews.forEach(review => {
-            
-        })
     })
 
     res.json({Spots: spotsList})
