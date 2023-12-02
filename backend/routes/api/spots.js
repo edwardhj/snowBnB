@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, SpotImage, Review } = require('../../db/models');
+const { Spot, SpotImage, Review, User } = require('../../db/models');
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.js');
 const router = express.Router();
 
@@ -81,7 +81,55 @@ router.get('/current', requireAuth, async (req, res) => {
     res.json({Spots: spotsList});
 });
 
+// Get details for a Spot from an id
+router.get('/:spotId', async (req, res) => {
+    const { spotId } = req.params;
 
+    const id = parseInt(spotId, 10);
+
+    const spot = await Spot.findByPk(id, 
+        {
+            include: [
+                {model: SpotImage, attributes: ['id', 'url', 'preview']}, 
+                {model: Review}, 
+                {model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName']}
+            ]
+        }
+    );
+
+    // Error when Spot with specified id couldn't be found
+    if (!spot){
+        return res.status(404).json({ message: "Spot couldn't be found"});
+    }
+
+    // Create an array of Spots & convert spots to a POJO
+    const spotsList = [];
+    spotsList.push(spot.toJSON());
+    
+    // Remove Reviews & create avgRating key
+    spotsList.forEach(spot => {
+        let sum = 0;
+        let spots = 0;
+        spot.numReviews = 0;
+        spot.Reviews.forEach(review => {
+            spot.numReviews++;
+            if (review.stars){
+                sum += review.stars;
+                spots ++;
+                spot.avgStarRating = (sum / spots);
+            };
+        });
+        if (!spot.avgStarRating) spot.avgStarRating = 'no ratings available';
+        delete spot.Reviews;
+    });
+
+    const theSpot = spotsList[0];
+
+    res.json(theSpot);
+});
+
+// Create a spot
+// router.post('/', requireAuth)
 
 
 module.exports = router;

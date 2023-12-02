@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Spot.belongsTo(models.User, {
         foreignKey: 'ownerId',
+        as: 'Owner',
         onDelete: 'CASCADE'
       }),
       Spot.belongsToMany(models.User, {
