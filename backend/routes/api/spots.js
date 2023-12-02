@@ -2,6 +2,44 @@ const express = require('express');
 const { Spot, SpotImage, Review, User } = require('../../db/models');
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.js');
 const router = express.Router();
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
+const spotValidationErrors = [
+    check('address')
+      .exists({ checkFalsy: true })
+      .withMessage('Street address is required'),
+    check('city')
+      .exists({ checkFalsy: true })
+      .withMessage('City is required'),
+    check('state')
+      .exists({ checkFalsy: true })
+      .withMessage('State is required'),
+    check('country')
+      .exists({ checkFalsy: true })
+      .withMessage('Country is required'),
+    check('lat')
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .isFloat({min: -90, max: 90})
+      .withMessage('Latitude must be within -90 and 90'),
+    check('lng')
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage('Longitude must be within -180 and 180'),
+    check('name')
+      .exists({ checkFalsy: true })
+      .isLength({max: 50})
+      .withMessage('Name must be less than 50 characters'),
+    check('description')
+      .exists({ checkFalsy: true})
+      .withMessage('Description is required'),
+    check('price')
+      .exists({ checkFalsy: true })
+      .isFloat({min:0.01})
+      .withMessage('Price per day must be a positive number'),  
+    handleValidationErrors
+  ];
 
 // Get all Spots
 router.get('/', async (req, res) => {
@@ -167,6 +205,7 @@ router.post('/', requireAuth, async (req, res) => {
     return res.status(201).json(newSpot);
 });
 
+// Add Image to Spot based on Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
     const { spotId } = req.params;
     const id = parseInt(spotId, 10);
@@ -202,6 +241,84 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     };
 
     res.json(resImg);
+});
+
+// Edit a Spot
+router.put('/:spotId',  requireAuth, spotValidationErrors, async (req, res) => {
+    const { spotId } = req.params;
+    const id = parseInt(spotId, 10);
+    const userId = req.user.id;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    const spot = await Spot.findByPk(id);
+    
+    // if spot doesn't exist with specified id
+    if (!spot){
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+    // if spot's owner doesn't match the logged in user
+    if (spot.ownerId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+
+    const updatedSpot = await spot.update({
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        lat: lat,
+        lng: lng,
+        name: name,
+        description: description,
+        price: price
+    });
+
+    const resSpot = {
+        id: updatedSpot.id,
+        ownerId: updatedSpot.ownerId,
+        address: updatedSpot.address,
+        city: updatedSpot.city,
+        state: updatedSpot.state,
+        country: updatedSpot.country,
+        lat: updatedSpot.lat,
+        lng: updatedSpot.lng,
+        name: updatedSpot.name,
+        description: updatedSpot.description,
+        price: updatedSpot.price,
+        createdAt: updatedSpot.createdAt,
+        updatedAt: updatedSpot.updatedAt
+    };
+
+    res.json(resSpot);
+});
+
+// Delete a Spot
+router.delete('/:spotId', requireAuth, async (req, res) => {
+    const { spotId } = req.params;
+    const id = parseInt(spotId, 10);
+    const userId = req.user.id;
+
+    const spot = await Spot.findByPk(id);
+    
+    // if spot doesn't exist with specified id
+    if (!spot){
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+    // if spot's owner doesn't match the logged in user
+    if (spot.ownerId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+
+    const deletedSpot = await Spot.destroy({ where: { id: id }});
+    res.json({ message: 'Successfully deleted'});
 });
 
 module.exports = router;
