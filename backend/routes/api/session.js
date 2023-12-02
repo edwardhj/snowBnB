@@ -38,7 +38,7 @@ router.post('/', validateLogin, async (req, res, next) => {
         // err.title = 'Login failed';
         // err.errors = { credential: 'The provided credentials were invalid.' };
         throw err;
-      }
+      };
   
       const safeUser = {
         id: user.id,

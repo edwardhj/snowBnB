@@ -129,7 +129,46 @@ router.get('/:spotId', async (req, res) => {
 });
 
 // Create a spot
-// router.post('/', requireAuth)
+router.post('/', requireAuth, async (req, res) => {
+    const userId = req.user.id;
+
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    const newSpotData = {
+        ownerId: userId,
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        lat: lat,
+        lng: lng,
+        name: name,
+        description: description,
+        price: price
+    };
+
+    const err = new Error('Bad Request');
+    err.errors = {};
+    err.status = 400;
+
+    if (!address) err.errors.address = 'Street address is required';
+    if (!city) err.errors.city = 'City is required';
+    if (!state) err.errors.state = 'State is required';
+    if (!country) err.errors.country = 'Country is required';
+    if (!lat) err.errors.lat = 'Latitude must be within -90 and 90';
+    if (!lng) err.errors.lng = 'Longitude must be within -180 and 180';
+    if (!name) err.errors.name = 'Name must be less than 50 characters';
+    if (!description) err.errors.description = 'Description is required';
+    if (!price) err.errors.price = 'Price per day must be a positive number';
+
+    if (Object.keys(err.errors)[0]) throw err;
+
+
+    const newSpot = await Spot.create(newSpotData);
+
+    return res.status(201).json(newSpot);
+
+});
 
 
 module.exports = router;
