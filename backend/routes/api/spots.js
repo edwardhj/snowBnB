@@ -160,15 +160,48 @@ router.post('/', requireAuth, async (req, res) => {
     if (!name) err.errors.name = 'Name must be less than 50 characters';
     if (!description) err.errors.description = 'Description is required';
     if (!price) err.errors.price = 'Price per day must be a positive number';
-
     if (Object.keys(err.errors)[0]) throw err;
-
 
     const newSpot = await Spot.create(newSpotData);
 
     return res.status(201).json(newSpot);
-
 });
 
+router.post('/:spotId/images', requireAuth, async (req, res) => {
+    const { spotId } = req.params;
+    const id = parseInt(spotId, 10);
+    const userId = req.user.id;
+    const { url, preview } = req.body;
+
+    const spot = await Spot.findByPk(id);
+    
+    // if spot doesn't exist with specified id
+    if (!spot){
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+    // if spot's owner doesn't match the logged in user
+    if (spot.ownerId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+
+    // successful response
+    const createdImg = await SpotImage.create({
+        spotId: id,
+        url: url,
+        preview: preview
+    });
+
+    const resImg = {
+        id: createdImg.id,
+        url: createdImg.url,
+        preview: createdImg.preview
+    };
+
+    res.json(resImg);
+});
 
 module.exports = router;
