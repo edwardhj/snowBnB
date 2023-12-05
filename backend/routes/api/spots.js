@@ -325,7 +325,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 });
 
 // Edit a Spot
-router.put('/:spotId',  requireAuth, spotValidationErrors, async (req, res) => {
+router.put('/:spotId', requireAuth, spotValidationErrors, async (req, res) => {
     const { spotId } = req.params;
     const id = parseInt(spotId, 10);
     const userId = req.user.id;

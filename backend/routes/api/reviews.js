@@ -72,7 +72,11 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     // If review already has 10 images
     const imageList = [];
     review.ReviewImages.forEach(image => imageList.push(image.toJSON()));
-    if (imageList.length >= 10) throw new Error('Maximum number of images for this resource was reached');
+    if (imageList.length >= 10){
+        const err = new Error('Maximum number of images for this resource was reached');
+        err.status = 403;
+        throw err;
+    };
 
     // successful response
     const image = await ReviewImage.create({
@@ -87,6 +91,8 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
     res.json(resImg);
 });
+
+
 
 
 module.exports = router;
