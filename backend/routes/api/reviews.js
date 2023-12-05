@@ -93,6 +93,29 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 });
 
 
+// Delete a Spot
+router.delete('/:reviewId', requireAuth, async (req, res) => {
+    const { reviewId } = req.params;
+    const id = parseInt(reviewId, 10);
+    const userId = req.user.id;
 
+    const review = await Review.findByPk(id);
+    
+    // if spot doesn't exist with specified id
+    if (!review){
+        const err = new Error("Review couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+    // if spot's owner doesn't match the logged in user
+    if (review.userId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+
+    const deletedReview = await Review.destroy({ where: { id: id }});
+    res.json({ message: 'Successfully deleted'});
+});
 
 module.exports = router;
