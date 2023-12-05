@@ -45,7 +45,48 @@ router.get('/current', requireAuth, async (req, res) => {
      res.json({Reviews: reviewsList});
 });
 
+// Add an Image to a Review based on the Review's id
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    const { reviewId } = req.params;
+    const id = parseInt(reviewId, 10);
+    const { url } = req.body;
+    const review = await Review.findByPk(id,{
+        include: ReviewImage
+    });
 
+    // If review with specified Id doesn't exist
+    if (!review){
+        const err = new Error ("Review couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+
+    // If review isn't owend by current user
+    if (review.userId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+
+    // If review already has 10 images
+    const imageList = [];
+    review.ReviewImages.forEach(image => imageList.push(image.toJSON()));
+    if (imageList.length >= 10) throw new Error('Maximum number of images for this resource was reached');
+
+    // successful response
+    const image = await ReviewImage.create({
+        url: url,
+        reviewId: id
+    });
+
+    const resImg = {
+        id: image.id,
+        url: image.url
+    };
+
+    res.json(resImg);
+});
 
 
 module.exports = router;
