@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, SpotImage, Review, User, ReviewImage } = require('../../db/models');
+const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../db/models');
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.js');
 const router = express.Router();
 const { check } = require('express-validator');
@@ -191,6 +191,44 @@ router.get('/:spotId/reviews', async (req, res) => {
     }
 
     res.json({Reviews: reviews});
+});
+
+// Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+    const { spotId } = req.params;
+    const id = parseInt(spotId, 10);
+    const userId = req.user.id;
+
+    const spot = await Spot.findByPk(id, {
+    });
+    
+    // if spot doesn't exist with specified id
+    if (!spot){
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+
+    // if you are NOT the owner of the spot
+    if (spot.ownerId !== userId){
+        const bookings = await Booking.findAll({
+            where: {spotId: spotId},
+            attributes: ['spotId', 'startDate', 'endDate']
+        });
+        res.json({Bookings: bookings})
+    };
+
+    // if you ARE the owner of the spot
+    if (spot.ownerId === userId){
+        const bookings = await Booking.findAll({
+            where: { spotId: spotId },
+            include: {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        });
+        res.json({Bookings: bookings})
+    }
 });
 
 // Create a spot
