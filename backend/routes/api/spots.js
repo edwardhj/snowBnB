@@ -497,7 +497,7 @@ router.post('/:spotId/bookings', requireAuth, bookingValidationErrors, async (re
     };
 
     // if spot owner is the user making the booking
-    if (spot.userId === userId){
+    if (spot.ownerId === userId){
         const err = new Error('Forbidden');
         err.status = 403;
         throw err;

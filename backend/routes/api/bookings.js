@@ -65,13 +65,6 @@ router.put('/:bookingId', requireAuth, editBookingErrors, async (req, res) => {
 
     const booking = await Booking.findByPk(id);
 
-    // if booking's owner doesn't match the logged in user
-    if (booking.userId !== userId){
-        const err = new Error('Forbidden');
-        err.status = 403;
-        throw err;
-    };
-    
     // if booking doesn't exist with specified id
     if (!booking){
         const err = new Error("Booking couldn't be found");
@@ -79,6 +72,13 @@ router.put('/:bookingId', requireAuth, editBookingErrors, async (req, res) => {
         throw err;
     };
 
+    // if booking's owner doesn't match the logged in user
+    if (booking.userId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+    
     // Can't edit a booking that's past the end date
     const existingEnd = new Date(booking.endDate).getTime();
     const today = new Date().getTime();
