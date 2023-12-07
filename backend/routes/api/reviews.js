@@ -5,6 +5,18 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const reviewValidationErrors = [
+    check('review')
+        .optional()
+        .exists({ checkFalsy: true})
+        .withMessage('Review text is required'),
+    check('stars')
+        .optional()
+        .exists({ checkFalsy: true})
+        .isInt({ min:0, max:5})
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
 
 // Get all Reviews of the Current User
 router.get('/current', requireAuth, async (req, res) => {
@@ -93,7 +105,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 });
 
 // Edit a Review
-router.put('/:reviewId', requireAuth, async (req, res) => {
+router.put('/:reviewId', requireAuth, reviewValidationErrors, async (req, res) => {
     const { reviewId } = req.params;
     const id = parseInt(reviewId, 10);
     const userId = req.user.id;
@@ -115,15 +127,15 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
     };
 
     // check for bad update requests (invalid params)
-    if (review || stars){
-        const err = new Error('Bad Request');
-        err.errors = {};
-        err.status = 400;
+    // if (review || stars){
+    //     const err = new Error('Bad Request');
+    //     err.errors = {};
+    //     err.status = 400;
 
-        if (review === undefined) err.errors.review = 'Review text is required';
-        if (stars && ![1, 2, 3, 4, 5].includes(stars)) err.errors.stars = 'Stars must be an integer from 1 to 5';
-        if (Object.keys(err.errors).length > 0) throw err;
-    };
+    //     if (review === undefined) err.errors.review = 'Review text is required';
+    //     if (stars && ![1, 2, 3, 4, 5].includes(stars)) err.errors.stars = 'Stars must be an integer from 1 to 5';
+    //     if (Object.keys(err.errors).length > 0) throw err;
+    // };
 
     // successful response
     if (review) await rev.update({review: review});
