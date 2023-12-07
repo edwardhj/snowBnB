@@ -138,7 +138,41 @@ router.put('/:bookingId', requireAuth, editBookingErrors, async (req, res) => {
     res.json(booking);
 });
 
+// Delete a Booking
+router.delete('/:bookingId', requireAuth, async (req, res) => {
+    const { bookingId } = req.params;
+    const id = parseInt(bookingId, 10);
+    const userId = req.user.id;
 
+    const booking = await Booking.findByPk(id, {
+        include: {model: User}
+    });
+
+    // if spot doesn't exist with specified id
+    if (!booking){
+        const err = new Error("Booking couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+    // if spot's owner doesn't match the logged in user || booking's owner doesn't match logged in user
+    if (booking.userId !== userId || booking.User.id !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
+
+    // if booking has already been started
+    let startDate = new Date(booking.startDate).getTime();
+    let today = new Date();
+    if (today >= startDate){
+        const err = new Error('Bookings that have been started can\'t be deleted');
+        err.status = 403;
+        throw err;
+    };
+
+    const deletedBooking = await Booking.destroy({ where: { id: id }});
+    res.json({ message: 'Successfully deleted'});
+});
 
 
 
