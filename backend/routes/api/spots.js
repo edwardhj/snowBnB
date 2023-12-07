@@ -489,17 +489,17 @@ router.post('/:spotId/bookings', requireAuth, bookingValidationErrors, async (re
 
     const spot = await Spot.findByPk(id);
 
-    // if spot owner is the user making the booking
-    if (spot.userId === userId){
-        const err = new Error('Forbidden');
-        err.status = 403;
-        throw err;
-    };
-
     // if spot doesn't exist with specified id
     if (!spot){
         const err = new Error("Spot couldn't be found");
         err.status = 404;
+        throw err;
+    };
+
+    // if spot owner is the user making the booking
+    if (spot.userId === userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
         throw err;
     };
 
