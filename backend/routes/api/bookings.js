@@ -64,6 +64,13 @@ router.put('/:bookingId', requireAuth, editBookingErrors, async (req, res) => {
     const { startDate, endDate } = req.body;
 
     const booking = await Booking.findByPk(id);
+
+    // if booking's owner doesn't match the logged in user
+    if (booking.userId !== userId){
+        const err = new Error('Forbidden');
+        err.status = 403;
+        throw err;
+    };
     
     // if booking doesn't exist with specified id
     if (!booking){
