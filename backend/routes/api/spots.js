@@ -4,7 +4,6 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.j
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const booking = require('../../db/models/booking.js');
 
 const spotValidationErrors = [
     check('address')
