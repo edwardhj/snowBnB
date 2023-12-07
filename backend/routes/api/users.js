@@ -48,11 +48,12 @@ router.post('/', validateSignup, async (req, res) => {
       const err = new Error('User already exists');
       err.status = 500;
       err.msg = 'User already exists';
+      err.errors = {};
       if (existingEmail){
-        err.errors = { email: 'User with that email already exists' };
+        err.errors.email ='User with that email already exists';
       };
       if (existingUserName){
-        err.errors = { email: 'User with that username already exists' };
+        err.errors.username = 'User with that username already exists';
       };
       if (Object.keys(err.errors)[0]) throw err;
 
