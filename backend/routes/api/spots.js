@@ -4,6 +4,7 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.j
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { Op } = require('sequelize');
 
 const spotValidationErrors = [
     check('address')
@@ -104,9 +105,56 @@ const bookingValidationErrors = [
     handleValidationErrors
 ];
 
+const spotQueryValidationErrors = [
+    check('page')
+        .optional()
+        .isInt({ min: 1, max: 10})
+        .withMessage('Page must be greater than or equal to 1'),
+    check('size')
+        .optional()
+        .isInt({ min: 1, max: 20})
+        .withMessage('Size must be greater than or equal to 1'),
+    check('minLat')
+        .optional()
+        .isDecimal()
+        .withMessage('Minimum latitude is invalid'),
+    check('maxLat')
+        .optional()
+        .isDecimal()
+        .withMessage('Maximum latitude is invalid'),
+    check('minLng')
+        .optional()
+        .isDecimal()
+        .withMessage('Minimum longitude is invalid'),
+    check('maxLng')
+        .optional()
+        .isDecimal()
+        .withMessage('Maximum longitude is invalid'),
+    check('minPrice')
+        .optional()
+        .isFloat({ min: 0})
+        .withMessage('Minimum price must be greater than or equal to 0'),
+    check('maxPrice')
+        .optional()
+        .isFloat({ min: 0})
+        .withMessage('Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
+];
+
+
 // Get all Spots
-router.get('/', async (req, res) => {
+router.get('/', spotQueryValidationErrors, async (req, res) => {
+    const { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+    const where = {};
+    if (minLat || maxLat) where.lat = { [Op.between]: [minLat, maxLat] };
+    if (minLng || maxLng) where.lng = { [Op.between]: [minLng, maxLng] };
+    if (minPrice || maxPrice) where.price = { [Op.between]: [minPrice, maxPrice] };
+
     const spots = await Spot.findAll({
+        where: where,
+        offset: (page - 1) * size,
+        limit: size,
         include: [{model: SpotImage,}, {model: Review}]
     });
 
@@ -138,7 +186,14 @@ router.get('/', async (req, res) => {
         delete spot.SpotImages;
     });
 
-    res.json({Spots: spotsList});
+    let pageInt = parseInt(page, 10);
+    let sizeInt = parseInt(size, 10);
+
+    res.json({
+        Spots: spotsList,
+        page: pageInt,
+        size: sizeInt
+    });
 });
 
 router.get('/current', requireAuth, async (req, res) => {
