@@ -30,14 +30,14 @@ module.exports = {
       {
         spotId: 1,
         userId: 5,
-        startDate: new Date(startDate1),
-        endDate: new Date(endDate1)
+        startDate: startDate1,
+        endDate: endDate1
       },
       {
         spotId: 2,
         userId: 4,
-        startDate: new Date(startDate2),
-        endDate: new Date(endDate2)
+        startDate: startDate2,
+        endDate: endDate2
       }
      ], { validate: true })
   },

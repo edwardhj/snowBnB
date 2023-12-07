@@ -4,6 +4,7 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.j
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const booking = require('../../db/models/booking.js');
 
 const spotValidationErrors = [
     check('address')
@@ -39,7 +40,23 @@ const spotValidationErrors = [
       .isFloat({min:0.01})
       .withMessage('Price per day must be a positive number'),  
     handleValidationErrors
-  ];
+];
+
+const bookingValidationErrors = [
+    check('startDate')
+        .exists()
+        .isAfter(new Date().toString())
+        .withMessage('startDate cannot be in the past'),
+    check('endDate')
+        .exists()
+        .custom((value, { req }) => {
+            if(new Date(value) <= new Date(req.body.startDate)) {
+                throw new Error ('endDate cannot be on or before startDate');
+            };
+            return true;
+        }),
+    handleValidationErrors
+];
 
 // Get all Spots
 router.get('/', async (req, res) => {
@@ -360,6 +377,75 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     };
 
     res.status(201).json(resReview);
+});
+
+// Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, bookingValidationErrors, async (req, res) => {
+    const { spotId } = req.params;
+    const id = parseInt(spotId, 10);
+    const userId = req.user.id;
+    const { startDate, endDate } = req.body;
+
+    const spot = await Spot.findByPk(id);
+
+    // if spot doesn't exist with specified id
+    if (!spot){
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+
+    const startingDate = new Date(startDate);
+    const endingDate = new Date(endDate);
+    const bookings = await Booking.findAll({
+        where: { spotId: id }
+    })
+    
+    // Create a POJO-filled array
+    const bookingsList = [];
+    bookings.forEach(booking => bookingsList.push(booking.toJSON()));
+
+    const err = new Error('Sorry, this spot is already booked for the specified dates');
+    err.errors = {};
+    err.status = 403;
+    // Iterate over bookingsList & check if a booking is in place 
+    for (let i = 0; i < bookingsList.length; i++){
+        let existingStartDate = new Date(bookingsList[i].startDate);
+        let existingEndDate = new Date(bookingsList[i].endDate);
+        let existingStart = existingStartDate.getTime();
+        let existingEnd = existingEndDate.getTime();
+        let newStart = startingDate.getTime();
+        let newEnd = endingDate.getTime();
+
+        // Check if booking is encompassed by a pre-existing booking
+        if (existingStart <= newStart && existingEnd >= newEnd){
+            err.errors.startDate = 'Start date conflicts with an existing booking';
+            err.errors.endDate = 'End date conflicts with an existing booking';
+        };
+        // Check if end date conflicts with an existing booking when start date does not
+        if (existingStart >= newStart && newEnd >= existingStart){
+            err.errors.startDate = 'End date conflicts with an existing booking';
+        };
+        // Check if start date conflicts with an existing booking when end date does not
+        if (existingEnd <= newEnd && newStart <= existingEnd){
+            err.errors.startDate = 'End date conflicts with an existing booking';
+        };
+        // Check if booking encompasses a pre-existing booking
+        if (newStart <= existingStart && newEnd >= existingEnd){
+            err.errors.startDate = 'Start date conflicts with an existing booking';
+            err.errors.endDate = 'End date conflicts with an existing booking';
+        };
+        if (err.errors.startDate || err.errors.endDate) throw err;
+    };
+
+    const booking = await Booking.create({
+        spotId: id,
+        userId,
+        startDate,
+        endDate
+    });
+
+    res.json(booking);
 });
 
 // Edit a Spot
