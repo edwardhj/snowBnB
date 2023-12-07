@@ -5,6 +5,23 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const editBookingErrors = [
+    check('startDate')
+        .optional()
+        .exists()
+        .isAfter(new Date().toString())
+        .withMessage('startDate cannot be in the past'),
+    check('endDate')
+        .optional()
+        .exists()
+        .custom((value, { req }) => {
+            if(new Date(value) <= new Date(req.body.startDate)) {
+                throw new Error ('endDate cannot be on or before startDate');
+            };
+            return true;
+        }),
+    handleValidationErrors
+];
 
 // Get all of the Current User's Bookings
 router.get('/current', requireAuth, async (req, res) => {
@@ -39,7 +56,80 @@ router.get('/current', requireAuth, async (req, res) => {
     res.json({Bookings: bookingsList});
 });
 
+// Edit a Booking
+router.put('/:bookingId', requireAuth, editBookingErrors, async (req, res) => {
+    const { bookingId } = req.params;
+    const id = parseInt(bookingId, 10);
+    const userId = req.user.id;
+    const { startDate, endDate } = req.body;
 
+    const booking = await Booking.findByPk(id);
+    
+    // if booking doesn't exist with specified id
+    if (!booking){
+        const err = new Error("Booking couldn't be found");
+        err.status = 404;
+        throw err;
+    };
+
+    // Can't edit a booking that's past the end date
+    const existingEnd = new Date(booking.endDate).getTime();
+    const today = new Date().getTime();
+    if (today > existingEnd){
+        const err = new Error('Past bookings can\'t be modified');
+        err.status = 403;
+        throw err;
+    };
+
+    // Booking Conflict Error
+    const bookings = await Booking.findAll({where: { spotId: booking.spotId }});
+    const bookingsList = [];
+    bookings.forEach(book => bookingsList.push(book.toJSON()));
+
+    const err = new Error('Sorry, this spot is already booked for the specified dates');
+    err.errors = {};
+    err.status = 403;
+
+    // Iterate over bookingsList & check if a booking is in place 
+    for (let i = 0; i < bookingsList.length; i++){
+        if (bookingsList[i].id === booking.id) continue;
+        
+        let newStartDate;
+        let newEndDate;
+        let existingStart = new Date(bookingsList[i].startDate).getTime();
+        let existingEnd = new Date(bookingsList[i].endDate).getTime();
+
+        if (startDate) newStartDate = new Date(startDate).getTime();
+        else { newStartDate = new Date(booking.startDate).getTime()};
+        if (endDate) newEndDate = new Date(endDate).getTime();
+        else { newEndDate = new Date(booking.endDate).getTime()};
+
+        // Check if booking is encompassed by a pre-existing booking
+        if (existingStart <= newStartDate && existingEnd >= newEndDate){
+            err.errors.startDate = 'Start date conflicts with an existing booking';
+            err.errors.endDate = 'End date conflicts with an existing booking';
+        };
+        // Check if end date conflicts with an existing booking when start date does not
+        if (existingStart >= newStartDate && newEndDate >= existingStart){
+            err.errors.endDate = 'End date conflicts with an existing booking';
+        };
+        // Check if start date conflicts with an existing booking when end date does not
+        if (existingEnd <= newEndDate && newStartDate <= existingEnd){
+            err.errors.startDate = 'Start date conflicts with an existing booking';
+        };
+        // Check if booking encompasses a pre-existing booking
+        if (newStartDate <= existingStart && newEndDate >= existingEnd){
+            err.errors.startDate = 'Start date conflicts with an existing booking';
+            err.errors.endDate = 'End date conflicts with an existing booking';
+        };
+        if (err.errors.startDate || err.errors.endDate) throw err;
+    };
+
+    if (startDate) booking.update({startDate});
+    if (endDate) booking.update({endDate});
+
+    res.json(booking);
+});
 
 
 

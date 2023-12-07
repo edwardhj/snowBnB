@@ -399,7 +399,7 @@ router.post('/:spotId/bookings', requireAuth, bookingValidationErrors, async (re
     const endingDate = new Date(endDate);
     const bookings = await Booking.findAll({
         where: { spotId: id }
-    })
+    });
     
     // Create a POJO-filled array
     const bookingsList = [];
@@ -418,17 +418,17 @@ router.post('/:spotId/bookings', requireAuth, bookingValidationErrors, async (re
         let newEnd = endingDate.getTime();
 
         // Check if booking is encompassed by a pre-existing booking
-        if (existingStart <= newStart && existingEnd >= newEnd){
+        if (newStart >= existingStart && newEnd <= existingEnd){
             err.errors.startDate = 'Start date conflicts with an existing booking';
             err.errors.endDate = 'End date conflicts with an existing booking';
         };
         // Check if end date conflicts with an existing booking when start date does not
-        if (existingStart >= newStart && newEnd >= existingStart){
-            err.errors.startDate = 'End date conflicts with an existing booking';
+        if (newStart <= existingStart && newEnd >= existingStart){
+            err.errors.endDate = 'End date conflicts with an existing booking';
         };
         // Check if start date conflicts with an existing booking when end date does not
-        if (existingEnd <= newEnd && newStart <= existingEnd){
-            err.errors.startDate = 'End date conflicts with an existing booking';
+        if (newEnd >= existingEnd && newStart <= existingEnd){
+            err.errors.startDate = 'Start date conflicts with an existing booking';
         };
         // Check if booking encompasses a pre-existing booking
         if (newStart <= existingStart && newEnd >= existingEnd){
