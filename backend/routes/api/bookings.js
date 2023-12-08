@@ -46,9 +46,11 @@ router.get('/current', requireAuth, async (req, res) => {
 
     // Remove SpotImages & create previewImage key
     bookingsList.forEach(booking => {
-        booking.Spot.SpotImages.forEach(image => {
-            if (image.preview === true) booking.Spot.previewImage = image.url;
-        });
+        if (booking.Spot && booking.Spot.SpotImages){
+            booking.Spot.SpotImages.forEach(image => {
+                if (image.preview === true) booking.Spot.previewImage = image.url;
+            });
+        };
         if (!booking.Spot.previewImage) booking.Spot.previewImage = 'no preview image available';
         delete booking.Spot.SpotImages;
     });
