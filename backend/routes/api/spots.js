@@ -179,6 +179,9 @@ router.get('/', spotQueryValidationErrors, async (req, res) => {
 
     // Remove SpotImages & create previewImage key
     spotsList.forEach(spot => {
+        spot.price = Number(spot.price);
+        spot.lat = Number(spot.lat);
+        spot.lng = Number(spot.lng);
         spot.SpotImages.forEach(image => {
             if (image.preview === true) spot.previewImage = image.url;
         });
@@ -212,6 +215,9 @@ router.get('/current', requireAuth, async (req, res) => {
 
     // Remove Reviews & create avgRating key
     spotsList.forEach(spot => {
+        spot.price = Number(spot.price);
+        spot.lat = Number(spot.lat);
+        spot.lng = Number(spot.lng);
         let sum = 0;
         let spots = 0;
         spot.Reviews.forEach(review => {
@@ -264,6 +270,9 @@ router.get('/:spotId', async (req, res) => {
     
     // Remove Reviews & create avgRating key
     spotsList.forEach(spot => {
+        spot.price = Number(spot.price);
+        spot.lat = Number(spot.lat);
+        spot.lng = Number(spot.lng);
         let sum = 0;
         let spots = 0;
         spot.numReviews = 0;
@@ -384,6 +393,9 @@ router.post('/', requireAuth, async (req, res) => {
     if (Object.keys(err.errors)[0]) throw err;
 
     const newSpot = await Spot.create(newSpotData);
+    newSpot.price = Number(price);
+    newSpot.lat = Number(lat);
+    newSpot.lng = Number(lng);
 
     return res.status(201).json(newSpot);
 });
@@ -603,6 +615,10 @@ router.put('/:spotId', requireAuth, spotEditValidationErrors, async (req, res) =
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt
     };
+
+    resSpot.price = Number(price);
+    resSpot.lat = Number(lat);
+    resSpot.lng = Number(lng);
 
     res.json(resSpot);
 });

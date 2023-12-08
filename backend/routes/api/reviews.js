@@ -152,7 +152,7 @@ router.put('/:reviewId', requireAuth, reviewValidationErrors, async (req, res) =
     });
 });
 
-// Delete a Spot
+// Delete a Review
 router.delete('/:reviewId', requireAuth, async (req, res) => {
     const { reviewId } = req.params;
     const id = parseInt(reviewId, 10);
