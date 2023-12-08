@@ -51,7 +51,9 @@ router.get('/current', requireAuth, async (req, res) => {
                 if (image.preview === true) booking.Spot.previewImage = image.url;
             });
         };
-        if (!booking.Spot.previewImage) booking.Spot.previewImage = 'no preview image available';
+        if (booking.Spot && booking.Spot.SpotImages){
+            if (!booking.Spot.previewImage) booking.Spot.previewImage = 'no preview image available';
+        };
         delete booking.Spot.SpotImages;
     });
 
