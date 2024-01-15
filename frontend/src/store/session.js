@@ -7,9 +7,9 @@ const logIn = user => ({
     user
 });
 
-// const logOut = () => ({
-//     type: LOG_OUT
-// });
+const logOut = () => ({
+    type: LOG_OUT
+});
 
 export const login = (user) => async dispatch => {
     const {credential, password} = user;
@@ -19,8 +19,13 @@ export const login = (user) => async dispatch => {
         body: JSON.stringify({credential, password})
     });
     const data = await response.json();
-    dispatch(logIn(data.user));
-    return data;
+
+    if (response.ok){
+        dispatch(logIn(data.user));
+        return data;
+    } else {
+        return data;
+    }
 };
 
 export const restoreUser = () => async dispatch => {
@@ -47,9 +52,14 @@ export const signup = (user) => async (dispatch) => {
     return data;
 };
 
-// export const logout = () => async dispatch => {
-//     const response = await
-// }
+export const logout = () => async dispatch => {
+    const response = await csrfFetch('/api/session', {
+        method: 'DELETE'
+    });
+
+    dispatch(logOut());
+    return response;
+}
 
 const initialState = {user: null};
 

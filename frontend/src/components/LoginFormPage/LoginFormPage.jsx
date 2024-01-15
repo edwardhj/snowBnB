@@ -26,11 +26,11 @@ function LoginFormPage() {
     };
 
     return (
-        <div class='loginForm'>
+        <div className='loginForm'>
             <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
 
-                <div class='credential'>
+                <div className='credential'>
                     <label>
                         Username or Email
                         <input
@@ -42,7 +42,7 @@ function LoginFormPage() {
                     </label>
                 </div>
 
-                <div class='credential'>
+                <div className='credential'>
                     <label>
                         Password
                         <input
@@ -55,7 +55,7 @@ function LoginFormPage() {
                 </div>
 
             {errors.credential && <p>{errors.credential}</p>}
-            <button class='submission' type="submit">Log In</button>
+            <button className='submission' type="submit">Log In</button>
             </form>
         </div>
     )
