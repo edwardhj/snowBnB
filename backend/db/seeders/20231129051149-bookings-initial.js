@@ -9,11 +9,11 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
-const startDate1 = '2024-01-01T12:00:00.000Z';
-const endDate1 = '2024-01-05T12:00:00.000Z';
+const startDate1 = '2025-01-01T12:00:00.000Z';
+const endDate1 = '2025-01-05T12:00:00.000Z';
 
-const startDate2 = '2024-02-01T12:00:00.000Z';
-const endDate2 = '2024-02-05T12:00:00.000Z';
+const startDate2 = '2025-02-01T12:00:00.000Z';
+const endDate2 = '2025-02-05T12:00:00.000Z';
 
 module.exports = {
   async up (queryInterface, Sequelize) {
