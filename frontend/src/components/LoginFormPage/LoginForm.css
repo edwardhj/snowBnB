@@ -16,3 +16,7 @@
 .submission {
     justify-content: right;
 }
+
+.error {
+    color: red;
+}
