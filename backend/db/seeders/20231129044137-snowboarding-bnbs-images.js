@@ -24,12 +24,12 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: 'www.bigbear.com',
+        url: "https://skyhighcabins.com/wp-content/uploads/2023/10/060-Lakefront-Modern-A-Frame-Big-Bear-Vacation-Rentals.webp",
         preview: true
       },
       {
         spotId: 2,
-        url: 'www.mammothmountains.com',
+        url: 'https://static.trip101.com/main_pics/170314/medium.jpg',
         preview: true
       }
      ], { validate: true })
