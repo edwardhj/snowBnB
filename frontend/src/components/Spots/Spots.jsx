@@ -7,8 +7,9 @@ import './Spots.css';
 function Spots() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const spotObject = useSelector(state => state.spots);
+    const spotObject = useSelector(state => state.spots.spots);
     const spotArr = Object.values(spotObject);
+    console.log(spotObject)
 
     useEffect(() => {
         dispatch(SpotActions.getAllSpots());
@@ -25,23 +26,23 @@ function Spots() {
     return (
         <div className='spots-container'>
             {spotArr.map(spot => (
-                <div key={spot.id} className='spot-block' onClick={() => navigate(`/spots/${spot.id}`)}>
+                <div key={spot.id} className='spots-spot-block' onClick={() => navigate(`/spots/${spot.id}`)}>
                     <img
-                        className='spot-image'
+                        className='spots-spot-image'
                         alt={spot.previewImage}
                         src={spot.previewImage}
                         title={spot.name}
                     />
-                    <div className='info-container'>
-                        <div className='details-container'>
-                            <p className='details'>{`${spot.city}, ${spot.state}`}</p>
-                            <p className='price'>${spot.price} night</p>
+                    <div className='spots-info-container'>
+                        <div className='spots-details-container'>
+                                <p className='spots-spot-details'>{`${spot.city}, ${spot.state}`}</p>
+                                <p className='spots-spot-price'>${spot.price} night</p>
                         </div>
-                        <div className="rating-container">
-                            {spot.avgRating !== 'no ratings available' ? (
+                        <div className="spots-spot-rating-container">
+                            {spot.avgRating !== 'no ratings available' && typeof spot.avgRating === 'number' ? (
                                 <>
                                     <img 
-                                        className='star-image'
+                                        className='spots-star-image'
                                         src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
                                     />
                                     {spot.avgRating.toFixed(2)}
