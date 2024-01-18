@@ -33,7 +33,7 @@ function Spots() {
                         title={spot.name}
                     />
                     <div className='info-container'>
-                        <div>
+                        <div className='details-container'>
                             <p className='details'>{`${spot.city}, ${spot.state}`}</p>
                             <p className='price'>${spot.price} night</p>
                         </div>
@@ -42,7 +42,7 @@ function Spots() {
                             className='star-image'
                             src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
                             />
-                            {`${spot.avgRating}` || NEW}
+                            {`${spot.avgRating}` || 'NEW'}
                         </div>
                     </div>
                 </div>

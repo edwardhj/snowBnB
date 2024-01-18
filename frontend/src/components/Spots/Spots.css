@@ -26,14 +26,19 @@
     border-radius: 20px;
 }
 
+.details-container {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .details {
-    font-size: 17px;
+    font-size: 15px;
     margin: 0;
     font-weight: bold;
 }
 
 .price {
     font-weight: normal;
+    font-size: 13px;
 }
 
 .rating-container {

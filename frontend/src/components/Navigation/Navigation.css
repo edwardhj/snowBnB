@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 ul {
     display: flex;
     justify-content: space-between;
@@ -25,6 +27,7 @@ h4 {
     color: #1E3A5E;
     font-size: 20px;
     padding-left: 10px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .logo {
