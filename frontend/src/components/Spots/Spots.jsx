@@ -9,7 +9,6 @@ function Spots() {
     const navigate = useNavigate();
     const spotObject = useSelector(state => state.spots.spots);
     const spotArr = Object.values(spotObject);
-    console.log(spotObject)
 
     useEffect(() => {
         dispatch(SpotActions.getAllSpots());
