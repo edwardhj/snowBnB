@@ -31,6 +31,16 @@ module.exports = {
         spotId: 2,
         url: 'https://static.trip101.com/main_pics/170314/medium.jpg',
         preview: true
+      },
+      {
+        spotId: 3,
+        url: "https://assets.site-static.com/userFiles/453/image/CANYON_SKI__RACQUET_CONDO.jpg",
+        preview: true
+      },
+      {
+        spotId: 4,
+        url: "https://ap.rdcpix.com/3be6b0db319422cf01b5ed0117050b0el-m3271974147od-w480_h480_q80.jpg",
+        preview: true
       }
      ], { validate: true })
    } catch (error) {

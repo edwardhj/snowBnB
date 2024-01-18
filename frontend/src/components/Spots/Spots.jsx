@@ -38,11 +38,17 @@ function Spots() {
                             <p className='price'>${spot.price} night</p>
                         </div>
                         <div className="rating-container">
-                            <img 
-                            className='star-image'
-                            src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
-                            />
-                            {`${spot.avgRating}` || 'NEW'}
+                            {spot.avgRating !== 'no ratings available' ? (
+                                <>
+                                    <img 
+                                        className='star-image'
+                                        src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
+                                    />
+                                    {spot.avgRating.toFixed(2)}
+                                </>
+                            ) : (
+                                'New'
+                            )}
                         </div>
                     </div>
                 </div>

@@ -45,6 +45,30 @@ module.exports = {
         name: 'Pinecone Paradise',
         description: 'This luxurious home, located within the Stonegate Mammoth Luxury Homes Community, features over 4000 sq ft of living space. Additionally, there are 10 bedrooms, a library, a separate living room, a game room, and a breathtaking view of the snow-capped mountain. Relax and enjoy the views set by the panoramic windows. This home has a 2 car garage and driveway that can accommodate up to 3 more vehicles. A private laundry room on the middle level gets the chores done, and an additional powder room. This home is located just a stones throw away from the Eagle Express Lupin run where you can ski down from the home, cross the road and ski down to Eagle Lodge on the access path, providing the ultimate convenience. If you are looking for something special and a unique vacation have come to the right place! There is room for all of the family to spread out.',
         price: 2500
+      },
+      {
+        ownerId: 5,
+        address: '5810 Minaret Rd',
+        city: 'MammothLakes',
+        state: 'CA',
+        country: 'USA',
+        lat: 38.64596,
+        lng: -108.98236,
+        name: 'Pinecone Condo',
+        description: 'This cozy condo, located within the Mammoth Acorn Condo Community, features over 4000 sq ft of living space. Additionally, there are 10 bedrooms, a library, a separate living room, a game room, and a breathtaking view of the snow-capped mountain. Relax and enjoy the views set by the panoramic windows. This home has a 2 car garage and driveway that can accommodate up to 3 more vehicles. A private laundry room on the middle level gets the chores done, and an additional powder room. This home is located just a stones throw away from the Eagle Express Lupin run where you can ski down from the home, cross the road and ski down to Eagle Lodge on the access path, providing the ultimate convenience. If you are looking for something special and a unique vacation have come to the right place! There is room for all of the family to spread out.',
+        price: 700
+      },
+      {
+        ownerId: 5,
+        address: '5812 Minaret Rd',
+        city: 'MammothLakes',
+        state: 'CA',
+        country: 'USA',
+        lat: 39.64596,
+        lng: -128.98236,
+        name: 'Pinecone House',
+        description: 'This midsize home, located within the Mammoth Residential Homes Community, features over 4000 sq ft of living space. Additionally, there are 10 bedrooms, a library, a separate living room, a game room, and a breathtaking view of the snow-capped mountain. Relax and enjoy the views set by the panoramic windows. This home has a 2 car garage and driveway that can accommodate up to 3 more vehicles. A private laundry room on the middle level gets the chores done, and an additional powder room. This home is located just a stones throw away from the Eagle Express Lupin run where you can ski down from the home, cross the road and ski down to Eagle Lodge on the access path, providing the ultimate convenience. If you are looking for something special and a unique vacation have come to the right place! There is room for all of the family to spread out.',
+        price: 1200
       }
      ], { 
       validate: true,
