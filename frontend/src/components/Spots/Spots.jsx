@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SpotActions from '../../store/spots';
 import { useNavigate } from 'react-router-dom';
+import './Spots.css';
 
 function Spots() {
     const dispatch = useDispatch();
@@ -20,26 +21,34 @@ function Spots() {
             </div>
         )
     }
-    console.log(spotObject)
 
     return (
-        <>
-            <div>
-                {spotArr.map(spot => {
-                    return (
-                        <div key={spot.id} className='spot-block' onClick={() => navigate(`/spots/${spot.id}`)}>
-                                <img
-                                    className='spot-image'
-                                    alt={spot.previewImage}
-                                    src={spot.previewImage} />
-                                <p>{spot.name}</p>
-                                <p>{spot.price}</p>
+        <div className='spots-container'>
+            {spotArr.map(spot => (
+                <div key={spot.id} className='spot-block' onClick={() => navigate(`/spots/${spot.id}`)}>
+                    <img
+                        className='spot-image'
+                        alt={spot.previewImage}
+                        src={spot.previewImage}
+                        title={spot.name}
+                    />
+                    <div className='info-container'>
+                        <div>
+                            <p className='details'>{`${spot.city}, ${spot.state}`}</p>
+                            <p className='price'>${spot.price} night</p>
                         </div>
-                    )
-                })}
-            </div>
-        </>
-    )
+                        <div className="rating-container">
+                            <img 
+                            className='star-image'
+                            src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
+                            />
+                            {`${spot.avgRating}` || NEW}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 }
 
 export default Spots;
