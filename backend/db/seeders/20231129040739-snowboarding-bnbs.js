@@ -90,7 +90,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['Pinecone Paradise', 'Wanderlust Lodge'] }
+      name: { [Op.in]: ['Pinecone Paradise', 'Wanderlust Lodge', 'Pinecone Condo', 'Pinecone House'] }
     }, {});
   }
 };
