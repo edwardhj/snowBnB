@@ -8,15 +8,15 @@ function Navigation({ isLoaded }) {
 
   return (
     <div className='navigation-box'>
-      <ul>
+      <ul className='navigation-list'>
         <li>
           <NavLink style={{textDecoration: 'none'}} to="/">
-            <div className='company'>
+            <div className='navigation-company'>
               <img 
-              className='logo'
+              className='navigation-logo'
               src='https://www.shareicon.net/data/2017/05/24/886221_media_512x512.png'
               />
-              <h4>snowbnb</h4>
+              <h4 className='navigation-h4'>snowbnb</h4>
             </div>
           </NavLink>
         </li>

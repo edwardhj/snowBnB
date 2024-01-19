@@ -24,36 +24,60 @@
     width: 100%;
     display: flex;
     margin-bottom: 20px;
+    max-height: 500px;
 }
 
 .spot-mainImg {
     flex: 1;
     max-width: 50%;
-    max-height: 500px;
+    max-height: 100%;
 }
 
 .spot-mainImg img {
     max-width: 100%;
-    height: 100%;
+    max-height: 100%;
     object-fit: contain;
     border-radius: 20px;
 }
 
 .spot-sideImg-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+    grid-template-rows: repeat(2, 1fr);
+    max-height: 500px;
+
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    align-self: stretch;
 }
 
 .spot-sideImg {
-    max-width: 50%;
-    margin: 5px;
+    width: 100%;
+    height: 100%;
 }
 
-.spot-sideImg img {
-    max-width: 100%;
+.spot-sideImg0 img {
+    width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.spot-sideImg1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.spot-sideImg2 img {
+    width: 100%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.spot-sideImg3 img {
+    width: 100%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .spot-details-container {
