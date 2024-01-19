@@ -7,5 +7,11 @@
     width: 250px;
     height: 50px;
     font-family: 'Montserrat', sans-serif;
+    transition: background-color 1s, transform 1s;
+}
+
+.spot-reserve-button:hover {
+    background-color: #5F84A2;
+    transform: scale(1.1);
     font-weight: bold;
 }
