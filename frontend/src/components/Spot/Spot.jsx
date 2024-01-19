@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SpotActions from '../../store/spots';
+import ReserveButton from '../ReserveButton/ReserveButton';
 import './Spot.css';
 
 function Spot() {
@@ -18,6 +19,9 @@ function Spot() {
         }
         getDetails();
     }, [dispatch, spot, spotId]);
+    useEffect(() => {
+        dispatch(SpotActions.getAllSpots());
+    }, [dispatch, spotId])
 
     if (!spot){
         return (
@@ -60,8 +64,22 @@ function Spot() {
                         {spot.description}
                     </p>
                 </div>
-                <div className='spot-reserve-button'>
-
+                <div className='spot-reserve-button-container'>
+                    <div className='spot-reserve-button-details'>
+                        <div className='spot-RB-price'>
+                            ${spot.price} night
+                        </div>
+                        <div className='spot-RB-stars-reviews'>
+                            <img 
+                                className='spot-RB-star-image'
+                                src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
+                            />
+                            {`${spot.avgStarRating !== 'no ratings available' ? spot.avgStarRating.toFixed(2) : 'New'} `} 
+                            •
+                            {` ${spot.numReviews > 0 ? (spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`) : 'New'}`}
+                        </div>
+                    </div>
+                        <ReserveButton />
                 </div>
             </div>
         </div>
