@@ -1,0 +1,18 @@
+html * {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.review-header {
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.review-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-individual {
+    width: 100%;
+    padding-bottom: 20px;
+}

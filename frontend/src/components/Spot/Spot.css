@@ -121,3 +121,11 @@
     width: 16px;
     height: 16px
 }
+
+.review-container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-direction: column;
+}
