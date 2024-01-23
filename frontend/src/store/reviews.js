@@ -1,4 +1,3 @@
-import { contextsKey } from "express-validator/src/base";
 import { csrfFetch } from "./csrf";
 
 const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
