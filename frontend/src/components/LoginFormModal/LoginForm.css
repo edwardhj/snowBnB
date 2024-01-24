@@ -1,22 +1,47 @@
-
-.loginForm {
+.login-box {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f4f4f4;
-    width: 500px;
     flex-direction: column;
-    padding: 30px
+    align-items: center;
+    border-radius: 20px;
+    width: 500px;
 }
 
-.credential {
-    margin: 10px;
+.login-details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
 }
 
-.submission {
-    justify-content: right;
+.user-credential, .pass-credential {
+    width: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
 }
+
+.credential-sizing {
+    width: 75%;
+}
+
+.pass-credential {
+    margin-bottom: 5px;
+}
+
 
 .login-error {
     color: red;
+    display: flex;
+    justify-content: center;
+}
+
+.login-submission {
+    border-radius: 3px;
+    width: 75%;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #eaf7ff;
+    color: black;
 }

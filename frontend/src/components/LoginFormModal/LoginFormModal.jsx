@@ -24,34 +24,38 @@ function LoginFormModal() {
       });
   };
 
+  const disableButton = credential.length < 4 || password.length < 6;
+
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.message && (
-          <p className='login-error'>{errors.message}</p>
-        )}
-        <button type="submit">Log In</button>
-      </form>
-    </>
+      <div className='login-box'>
+        <h1>Log In</h1>
+        <form onSubmit={handleSubmit} className='login-details'>
+          <label className='user-credential'>
+            <input
+              type="text"
+              className='credential-sizing'
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              placeholder='Username or Email'
+              required
+            />
+          </label>
+          <label className='pass-credential'>
+            <input
+              type="password"
+              className='credential-sizing'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Password'
+              required
+            />
+          </label>
+          {errors.message && (
+            <p className='login-error'>{errors.message}</p>
+          )}
+          <button className="login-submission" type="submit" disabled={disableButton}>Log In</button>
+        </form>
+      </div>
   );
 }
 
