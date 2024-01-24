@@ -73,8 +73,7 @@ function Spot() {
                                     src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
                                 />
                                 {`${spot.avgStarRating !== 'no ratings available' ? spot.avgStarRating.toFixed(2) : 'New'} `} 
-                                •
-                                {` ${spot.numReviews > 0 ? (spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`) : 'New'}`}
+                                {` ${spot.numReviews > 0 ? (spot.numReviews === 1 ? '• 1 Review' : `• ${spot.numReviews} Reviews`) : ''}`}
                             </div>
                         </div>
                             <ReserveButton />

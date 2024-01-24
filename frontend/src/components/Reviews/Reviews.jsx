@@ -24,7 +24,7 @@ function Reviews(){
 
     if (!reviewArr.length){
         return (
-            <h1> There are currently no reviews</h1>
+            <h1> Be the first to post a review!</h1>
         )
     }
 

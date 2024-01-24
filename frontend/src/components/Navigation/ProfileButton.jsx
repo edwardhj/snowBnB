@@ -36,6 +36,7 @@ function ProfileButton({ user, NavigateHome }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    NavigateHome();
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
