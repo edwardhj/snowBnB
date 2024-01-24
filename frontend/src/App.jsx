@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import Spots from './components/Spots/spots';
+import Spots from './components/Spots/Spots';
 import Spot from './components/Spot/Spot';
 import * as sessionActions from './store/session';
 

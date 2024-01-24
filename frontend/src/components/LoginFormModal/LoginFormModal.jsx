@@ -3,8 +3,9 @@ import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
+// import DemoUser from './Demouser';
 
-function LoginFormModal() {
+function LoginFormModal({ NavigateHome }) {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
@@ -14,9 +15,13 @@ function LoginFormModal() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password }))
+    const loginAction = sessionActions.login;
+
+    return dispatch(loginAction({ credential, password }))
       .then(closeModal)
+      .then(() => NavigateHome())
       .catch(async (res) => {
+        console.log(res);
         const data = await res.json();
         if (data && data.message) {
           setErrors(data);
@@ -55,6 +60,13 @@ function LoginFormModal() {
           )}
           <button className="login-submission" type="submit" disabled={disableButton}>Log In</button>
         </form>
+        <button className="demo-submission" onClick={async () => {
+          await dispatch(sessionActions.demoLogin());
+          closeModal();
+          NavigateHome();
+          }}>
+            Demo User
+        </button>
       </div>
   );
 }

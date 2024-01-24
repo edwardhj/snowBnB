@@ -1,11 +1,18 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
-function Navigation({ isLoaded }) {
-  const sessionUser = useSelector(state => state.session.user);
 
+
+function Navigation({ isLoaded }) {
+  const navigate = useNavigate();
+  function NavigateHome() {
+    return navigate('/')
+  }
+
+  const sessionUser = useSelector(state => state.session.user);
   return (
     <div className='navigation-box'>
       <ul className='navigation-list'>
@@ -22,7 +29,7 @@ function Navigation({ isLoaded }) {
         </li>
         {isLoaded && (
           <li>
-            <ProfileButton user={sessionUser} />
+            <ProfileButton user={sessionUser} NavigateHome={NavigateHome}/>
           </li>
         )}
       </ul>
