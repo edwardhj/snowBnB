@@ -128,7 +128,6 @@ function PortmanteauSpot(){
             })
 
             const createdSpot = await dispatch(spotActions.createOneSpot(newSpot, allImages));
-            console.log(createdSpot);
             reset();
             navigate(`/spots/${createdSpot.id}`);
         }

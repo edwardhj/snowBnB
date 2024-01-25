@@ -21,7 +21,6 @@ function LoginFormModal({ NavigateHome }) {
       .then(closeModal)
       .then(() => NavigateHome())
       .catch(async (res) => {
-        console.log(res);
         const data = await res.json();
         if (data && data.message) {
           setErrors(data);

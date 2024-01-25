@@ -16,8 +16,6 @@ function Reviews(){
     const reviewObject = useSelector(state => state.reviews?.reviews);
     const reviewArr = reviewObject ? Object.values(reviewObject).filter(review => review.spotId === +spotId) : [];
 
-  console.log(reviewArr)
-
     useEffect(() => {
         dispatch(ReviewActions.getAllReviews(+spotId));
     }, [dispatch, spotId]);
