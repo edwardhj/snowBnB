@@ -6,7 +6,7 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './ProfileButton.css';
 
-function ProfileButton({ user, NavigateHome }) {
+function ProfileButton({ user, NavigateHome, NavigateToNewSpot }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -42,20 +42,27 @@ function ProfileButton({ user, NavigateHome }) {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <>
+    <div className='profile-button-container'>
+      {user && <button className='manage-spots' onClick={() => NavigateToNewSpot()}>Create a New Spot</button>}
       <button className="profile-button" onClick={toggleMenu}>
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
-          </>
+            <div>
+              <li className='user-login'>Hello, {user.firstName}</li>
+              <li className='user-login user-login2'>{user.email}</li>
+              <li className='menu-button-li'>
+              <button
+                  onClick={e => handleButton(e, '/spots/current')}
+                  className="menu-button">
+                  Manage Spots
+                </button>
+                </li>
+              <li className='menu-button-li'>
+                <button className="menu-button" onClick={logout}>Log Out</button>
+              </li>
+            </div>
         ) : (
           <>
             <OpenModalMenuItem
@@ -71,7 +78,7 @@ function ProfileButton({ user, NavigateHome }) {
           </>
         )}
       </ul>
-    </>
+    </div>
   );
 }
 

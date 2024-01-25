@@ -11,6 +11,9 @@ function Navigation({ isLoaded }) {
   function NavigateHome() {
     return navigate('/')
   }
+  function NavigateToNewSpot() {
+    return navigate('/spots/new')
+  }
 
   const sessionUser = useSelector(state => state.session.user);
   return (
@@ -29,7 +32,7 @@ function Navigation({ isLoaded }) {
         </li>
         {isLoaded && (
           <li>
-            <ProfileButton user={sessionUser} NavigateHome={NavigateHome}/>
+            <ProfileButton user={sessionUser} NavigateHome={NavigateHome} NavigateToNewSpot={NavigateToNewSpot}/>
           </li>
         )}
       </ul>

@@ -2,6 +2,21 @@
     display: none;
 }
 
+.profile-button-container {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    justify-content: right;
+}
+
+.manage-spots {
+    width: 200px;
+    height: 40px;
+    margin-right: 10px;
+    background-color: #86feff;
+    border-radius: 5px;
+}
+
 .profile-button {
     width: 40px;
     height: 40px;
@@ -9,6 +24,30 @@
     background-color: #86feff;
 }
 
+.user-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
 .modal-list-item {
     list-style-type: none;
+}
+
+.menu-button-li {
+    list-style-type: none;
+    border-top: 2px solid #000000;
+}
+
+.user-login {
+    list-style-type: none;
+}
+
+.user-login2 {
+    margin-bottom: 5px;
+}
+
+.menu-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
 }
