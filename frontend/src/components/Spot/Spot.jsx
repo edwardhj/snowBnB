@@ -82,7 +82,7 @@ function Spot() {
             </div>
 
             <div className='review-container'>
-                <Reviews />
+                <Reviews spot={spot} />
             </div>
         </>
     )

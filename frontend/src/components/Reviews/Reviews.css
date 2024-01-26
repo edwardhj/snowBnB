@@ -1,18 +1,69 @@
-html * {
-    font-family: 'Montserrat', sans-serif;
+.review-container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: start;
 }
 
 .review-header {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    margin-bottom: 20px;
+    font-size: 25px;
     font-weight: bold;
-    margin-bottom: 50px;
+}
+
+.reviews-RB-star-image {
+    margin-top: 20px;
+    width: 40px;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.spot-review-button {
+    background-color: #91AEC4;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 250px;
+    height: 50px;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 1s, transform 1s;
+    margin-top: 30px;
+}
+
+.spot-review-button:hover {
+    background-color: #5F84A2;
+    transform: scale(1.05);
+    font-weight: bold;
 }
 
 .review-body {
     display: flex;
     flex-direction: column;
+    align-items: left;
 }
 
 .review-individual {
-    width: 100%;
-    padding-bottom: 20px;
+    width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.review-individual h2 {
+    font-size: 1.3rem;
+}
+
+.review-individual h4 {
+    font-size: 1.2rem;
+    color: grey;
+}
+
+.review-individual p {
+    font-size: 1rem;
+    text-align: justify;
 }

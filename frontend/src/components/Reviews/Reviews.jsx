@@ -10,30 +10,47 @@ function formatUpdatedAt(updatedAt) {
     return formattedDate;
 }
 
-function Reviews(){
+function Reviews({ spot }){
     const dispatch = useDispatch();
     const { spotId } = useParams();
+    const user = useSelector(state => state.session.user);
     const reviewObject = useSelector(state => state.reviews?.reviews);
-    const reviewArr = reviewObject ? Object.values(reviewObject).filter(review => review.spotId === +spotId) : [];
+    const reviewArr = reviewObject 
+        ? Object.values(reviewObject)
+            .filter(review => review.spotId === +spotId)
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) // Sorting in descending order
+        : [];
 
     useEffect(() => {
         dispatch(ReviewActions.getAllReviews(+spotId));
     }, [dispatch, spotId]);
 
-    if (!reviewArr.length){
-        return (
-            <h1> Be the first to post a review!</h1>
-        )
-    }
-
     return (
-        <>
+        <div className="review-container">
             <div className="review-header">
-                Hey
+                <div>
+                    <img 
+                        className='reviews-RB-star-image'
+                        src='https://static.vecteezy.com/system/resources/thumbnails/001/189/165/small/star.png'
+                    />
+                    {`${spot.avgStarRating !== 'no ratings available' ? spot.avgStarRating.toFixed(2) : 'New'} `} 
+                    {` ${spot.numReviews > 0 ? (spot.numReviews === 1 ? '• 1 Review' : `• ${spot.numReviews} Reviews`) : ''}`}
+                </div>
+
+                <div>
+                { user && user.id !== spot.ownerId ?
+                    <button className='spot-review-button'>Post Your Review</button>
+                    : ''
+                }
+                </div>
             </div>
             
             <div className="review-body">
-                {reviewArr.map(review => (
+                {reviewArr.length === 0 && user && user.id !== spot.ownerId 
+                    ?
+                    <h2>Be the first to post a review!</h2>
+                    :
+                reviewArr.map(review => (
                     <div key={review.id} className="review-individual">
                         <h2>{review.User.firstName}</h2>
                         <h4>{formatUpdatedAt(review.updatedAt)}</h4>
@@ -41,7 +58,7 @@ function Reviews(){
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     )
 }
 
