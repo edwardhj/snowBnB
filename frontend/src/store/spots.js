@@ -70,13 +70,11 @@ export const createOneSpot = (spotData, imgs) => async dispatch => {
 };
 
 export const updateOneSpot = (spotData) => async dispatch => {
-    console.log(spotData)
     const response = await csrfFetch(`/api/spots/${spotData.id}`, {
         method: 'PUT',
         body: JSON.stringify(spotData)
     });
     const updatedSpot = await response.json();
-    console.log(updatedSpot)
 
     // for (const img of imgs) {
     //     await csrfFetch(`/api/spots/${updatedSpot.id}/images`, {

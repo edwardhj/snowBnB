@@ -34,7 +34,6 @@ function SignupFormModal({ NavigateHome }) {
         })
         .catch(async (res) => {
           const data = await res.json();
-          console.log(data)
           if (data?.errors) {
             setErrors(data.errors);
           }
