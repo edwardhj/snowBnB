@@ -1,9 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import DeleteSpotModal from "./DeleteSpotModal";
 
-function SpotCard({spot}) {
+function SpotCard({ spot }) {
     const navigate = useNavigate();
     const location = useLocation();
-
     const path = location.pathname === '/spots/current';
 
     return (
@@ -45,7 +46,13 @@ function SpotCard({spot}) {
                         }
                         >
                             Update</button>
-                        <button className='modify-spot-button'>Delete</button>
+
+                        <button className='modify-spot-button' onClick={e => e.stopPropagation()}>
+                            <OpenModalMenuItem
+                            modalComponent={<DeleteSpotModal spotId={spot.id}/>}
+                            itemText='Delete'
+                            />
+                        </button>
                     </div>
                     )}
 

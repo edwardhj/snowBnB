@@ -644,6 +644,8 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
         throw err;
     };
 
+    await Review.destroy({ where: { spotId: spotId } });
+    await SpotImage.destroy({ where: { spotId: spotId } });
     const deletedSpot = await Spot.destroy({ where: { id: id }});
     res.json({ message: 'Successfully deleted'});
 });

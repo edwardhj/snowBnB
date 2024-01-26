@@ -1,0 +1,52 @@
+.delete-spot-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+.delete-spot-modal h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.delete-spot-modal p {
+    color: #555;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.delete-confirm-button, .delete-cancel-button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.delete-confirm-button {
+    background-color: #ff4d4d;
+    color: white;
+    margin-right: 10px;
+}
+
+.delete-cancel-button {
+    background-color: #a0a0a0;
+    color: white;
+}
+
+/* Additional styling for hover effects */
+.delete-confirm-button:hover {
+    background-color: #ff6666;
+}
+
+.delete-cancel-button:hover {
+    background-color: #b3b3b3;
+}
