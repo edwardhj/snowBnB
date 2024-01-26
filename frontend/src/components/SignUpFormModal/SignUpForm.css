@@ -1,3 +1,59 @@
-.signup {
-    background-color: red;
+.signup-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    width: 500px;
+}
+
+.signup-details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.user-credential, .pass-credential {
+    width: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.credential-sizing {
+    width: 75%;
+}
+
+.pass-credential {
+    margin-bottom: 5px;
+}
+
+.signup-error {
+    color: red;
+    display: flex;
+    justify-content: center;
+}
+
+.signup-submission {
+    margin-top: 5px;
+    border-radius: 3px;
+    max-width: 400px;
+    width: 50%;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #eaf7ff;
+    color: black;
+}
+
+.demo-submission {
+    border-radius: 3px;
+    max-width: 400px;
+    width: 40%;
+    background-color: #eaf7ff;
+    color: black;
+    border-radius: 20px;
+    height: 50px;
+    margin-bottom: 30px;
 }

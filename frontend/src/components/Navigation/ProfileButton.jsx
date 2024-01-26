@@ -73,7 +73,7 @@ function ProfileButton({ user, NavigateHome, NavigateToNewSpot, NavigateToCurren
             <OpenModalMenuItem
               itemText="Sign Up"
               onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
+              modalComponent={<SignupFormModal NavigateHome={NavigateHome} />}
             />
           </>
         )}
