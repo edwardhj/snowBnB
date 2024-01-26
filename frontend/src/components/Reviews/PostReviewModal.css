@@ -1,0 +1,47 @@
+.post-review-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+}
+
+.post-review-modal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.post-review-modal textarea {
+    width: 75%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.rating-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.review-star-container {
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+.review-submission {
+        border-radius: 20px;
+        background-color: #eaf7ff;
+        color: black;
+        width: 50%;
+        height: 50px;
+        margin-top: 10px;
+        border: none;
+        cursor: pointer;
+}

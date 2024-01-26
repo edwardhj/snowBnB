@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as ReviewActions from '../../store/reviews';
 import './Reviews.css';
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import PostReviewModal from "./PostReviewModal";
 
 function formatUpdatedAt(updatedAt) {
     const date = new Date(updatedAt);
@@ -25,8 +27,11 @@ function Reviews({ spot }){
         dispatch(ReviewActions.getAllReviews(+spotId));
     }, [dispatch, spotId]);
 
+    const hasReviewed = reviewArr.some(review => review.User.id == user?.id);
+
     return (
         <div className="review-container">
+
             <div className="review-header">
                 <div>
                     <img 
@@ -38,15 +43,20 @@ function Reviews({ spot }){
                 </div>
 
                 <div>
-                { user && user.id !== spot.ownerId ?
-                    <button className='spot-review-button'>Post Your Review</button>
+                { user && user.id !== spot.ownerId && !hasReviewed ?
+                    <button className='spot-review-button'>
+                        <OpenModalMenuItem
+                        modalComponent={<PostReviewModal spotId={spot.id} />}
+                        itemText='Post Your Review'
+                        />
+                    </button>
                     : ''
                 }
                 </div>
             </div>
             
             <div className="review-body">
-                {reviewArr.length === 0 && user && user.id !== spot.ownerId 
+                {reviewArr.length === 0 && user && user.id !== spot.ownerId
                     ?
                     <h2>Be the first to post a review!</h2>
                     :

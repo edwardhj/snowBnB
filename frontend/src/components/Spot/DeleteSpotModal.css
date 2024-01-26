@@ -42,7 +42,6 @@
     color: white;
 }
 
-/* Additional styling for hover effects */
 .delete-confirm-button:hover {
     background-color: #ff6666;
 }
