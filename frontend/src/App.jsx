@@ -4,7 +4,8 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Spots from './components/Spots/Spots';
 import Spot from './components/Spot/Spot';
-import PortmanteauSpot from './components/Spot/Portmanteau'
+import PortmanteauSpot from './components/Spot/Portmanteau';
+import ManageSpots from './components/Spots/ManageSpots';
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -39,6 +40,14 @@ const router = createBrowserRouter([
       },
       {
         path: '/spots/new',
+        element: <PortmanteauSpot />
+      },
+      {
+        path: '/spots/current',
+        element: <ManageSpots />
+      },
+      {
+        path: '/spots/:spotId/edit',
         element: <PortmanteauSpot />
       }
     ]

@@ -1,11 +1,12 @@
 .spots-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: left;
     padding: 10px 30px 10px 30px;
 }
 
 .spots-spot-block {
+    padding: 10px 30px;
     width: calc(25% - 70px);
     box-shadow: 0 0 5px;
     padding: 10px 10px 10px 10px;
@@ -60,6 +61,28 @@
     width: 100%;
     height: 14px
 }
+
+.spots-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    padding-bottom: 15px;
+}
+
+.manage-header-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 40px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.modify-spot-button {
+    margin-right: 5px;
+    margin-left: 30px;
+}
+
 
 @media (max-width: 1200px) {
     .spots-spot-block {

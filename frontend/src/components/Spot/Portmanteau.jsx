@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import * as spotActions from '../../store/spots';
 import './Portmanteau.css';
 
@@ -22,13 +21,31 @@ function PortmanteauSpot(){
     const [previewImg, setPreviewImg] = useState('');
     const [errors, setErrors] = useState({});
     const [altImages, setAltImages] = useState({ 0: '', 1: '', 2: '', 3: ''});
-    const [submit, setSubmit] = useState(false);
 
-    // useEffect(() => {
-    //     if (spotId){
-    //         dispatch()
-    //     }
-    // })
+    useEffect(() => {
+        if (spotId){
+            dispatch(spotActions.getOneSpot(spotId))
+            .then((spot) => {
+                setAddress(spot.address);
+                setCity(spot.city);
+                setState(spot.state);
+                setCountry(spot.country);
+                setLat(spot.lat);
+                setLng(spot.lng);
+                setName(spot.name);
+                setDescription(spot.description);
+                setPrice(spot.price);
+                setPreviewImg(spot.SpotImages[0].url);
+                setAltImages({
+                    0: spot.SpotImages[1]?.url || '',
+                    1: spot.SpotImages[2]?.url || '',
+                    2: spot.SpotImages[3]?.url || '',
+                    3: spot.SpotImages[4]?.url || '',
+                })
+            })
+        }
+    }, [spotId, dispatch])
+
 
     const validateImages = () => {
         const imgErrs = {};
@@ -83,11 +100,6 @@ function PortmanteauSpot(){
         setErrors({});
     };
 
-    // useEffect(() => {
-    //     const errors = spotValidations();
-    //     if (!Object.keys(errors).length) setDisableButton(false);
-    // })
-
     // 3 options
     // 1. Multiple img; add all urls into an array; loop through this in handle submit & dispatch a thunk inside the loop to create Spot image 
     // 2. pass the image array to create Spot thunk & loop through and make a fetch to api/spot/${spotId}/image
@@ -126,8 +138,13 @@ function PortmanteauSpot(){
                     }
                 }
             })
+            let createdSpot;
 
-            const createdSpot = await dispatch(spotActions.createOneSpot(newSpot, allImages));
+            if (spotId){
+                newSpot.id = spotId;
+                createdSpot = await dispatch(spotActions.updateOneSpot(newSpot));
+            } else { createdSpot = await dispatch(spotActions.createOneSpot(newSpot, allImages)) }
+            
             reset();
             navigate(`/spots/${createdSpot.id}`);
         }
@@ -136,7 +153,7 @@ function PortmanteauSpot(){
 
     return (
         <div className='new-spot-form'>
-            <h1>Create a new Spot</h1>
+            {spotId && <h1>Update your Spot </h1> || <h1>Create a new Spot</h1>}
             <form onSubmit={handleSubmit}>
                 <div className='spot-creation-location-container'>
                     <h2>Where&apos;s your place located?</h2>
@@ -272,7 +289,7 @@ function PortmanteauSpot(){
                 </div>
 
                 <div className ='spot-creation-button'>
-                    <button type='submit'>Create a Spot</button>
+                    <button type='submit'>{spotId && 'Update Your Spot' || 'Create a Spot'}</button>
                 </div>
             </form>
         </div>

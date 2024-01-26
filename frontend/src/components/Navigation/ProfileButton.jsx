@@ -6,7 +6,7 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './ProfileButton.css';
 
-function ProfileButton({ user, NavigateHome, NavigateToNewSpot }) {
+function ProfileButton({ user, NavigateHome, NavigateToNewSpot, NavigateToCurrent }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -54,7 +54,7 @@ function ProfileButton({ user, NavigateHome, NavigateToNewSpot }) {
               <li className='user-login user-login2'>{user.email}</li>
               <li className='menu-button-li'>
               <button
-                  onClick={e => handleButton(e, '/spots/current')}
+                  onClick={NavigateToCurrent}
                   className="menu-button">
                   Manage Spots
                 </button>

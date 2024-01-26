@@ -590,15 +590,15 @@ router.put('/:spotId', requireAuth, spotEditValidationErrors, async (req, res) =
         throw err;
     };
 
-    if (address) await spot.update(address);
-    if (city) await spot.update(city);
-    if (state) await spot.update(state);
-    if (country) await spot.update(country);
-    if (lat) await spot.update(lat);
-    if (lng) await spot.update(lng);
-    if (name) await spot.update(name);
-    if (description) await spot.update(description);
-    if (price) await spot.update(price);
+    if (address) await spot.update({address});
+    if (city) await spot.update({city});
+    if (state) await spot.update({state});
+    if (country) await spot.update({country});
+    if (lat) await spot.update({lat});
+    if (lng) await spot.update({lng});
+    if (name) await spot.update({name});
+    if (description) await spot.update({description});
+    if (price) await spot.update({price});
 
     const resSpot = {
         id: spot.id,

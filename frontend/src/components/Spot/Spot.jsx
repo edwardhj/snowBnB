@@ -39,12 +39,12 @@ function Spot() {
                 <div className='spot-images'>
                     <div className='spot-mainImg'>
                         <img
-                            alt={spot.SpotImages[0].url}
-                            src={spot.SpotImages[0].url}
+                            alt={spot?.SpotImages?.[0].url}
+                            src={spot?.SpotImages?.[0].url}
                         />
                     </div>
                     <div className='spot-sideImg-container'>
-                        {spot.SpotImages.slice(1, 5).map((image, index) => (
+                        {spot?.SpotImages?.slice(1, 5).map((image, index) => (
                         <div key={index} className={`spot-sideImg${index}`}>
                             <img
                                 alt={image.url}
