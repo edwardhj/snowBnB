@@ -5,6 +5,7 @@ import * as ReviewActions from '../../store/reviews';
 import './Reviews.css';
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import PostReviewModal from "./PostReviewModal";
+import DeleteReviewModal from "./DeleteReviewModal";
 
 function formatUpdatedAt(updatedAt) {
     const date = new Date(updatedAt);
@@ -65,6 +66,17 @@ function Reviews({ spot }){
                         <h2>{review.User.firstName}</h2>
                         <h4>{formatUpdatedAt(review.updatedAt)}</h4>
                         <p>{review.review}</p>
+                        {
+                            user?.id === review.User.id &&
+                            <button
+                                className='delete-review-button'
+                            >
+                                <OpenModalMenuItem
+                                modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>}
+                                itemText='Delete Review'
+                                />
+                            </button>
+                        }
                     </div>
                 ))}
             </div>
