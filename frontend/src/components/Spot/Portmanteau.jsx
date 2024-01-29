@@ -108,6 +108,8 @@ function PortmanteauSpot(){
         const allErrors = spotValidations();
         setErrors(allErrors);
 
+        
+
         let newSpot;
         const allImages = [previewImg, ...Object.values(altImages)];
         if (Object.keys(errors).length === 0){
@@ -138,15 +140,21 @@ function PortmanteauSpot(){
                     }
                 }
             })
-            let createdSpot;
 
-            if (spotId){
-                newSpot.id = spotId;
-                createdSpot = await dispatch(spotActions.updateOneSpot(newSpot));
-            } else { createdSpot = await dispatch(spotActions.createOneSpot(newSpot, allImages)) }
-            
-            reset();
-            navigate(`/spots/${createdSpot.id}`);
+            // try {
+                let createdSpot;
+
+                if (spotId){
+                    newSpot.id = spotId;
+                    createdSpot = await dispatch(spotActions.updateOneSpot(newSpot));
+                } else { createdSpot = await dispatch(spotActions.createOneSpot(newSpot, allImages)) }
+                
+                reset();
+                navigate(`/spots/${createdSpot.id}`);
+            // } catch (err) {
+            //     // console.log(err)
+            //     setErrors(err);
+            // }
         }
 
     };
